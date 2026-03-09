@@ -1,16 +1,14 @@
-//TO DO: FIX TO MATCH CRAGS INSTEAD OF PLANTS
-
 const express = require("express");
 const router = express.Router();
-const Plant = require("../models/Plant");
+const Crag = require("../models/Crags");
 const verifyToken = require("../middleware/authMiddleware");
 
-// GET ROUTE (Public - Anyone can see plants)
+// GET ROUTE (Public - Anyone can see crags)
 router.get("/", async (req, res) => {
   try {
-    //const plants = await Plant.find().limit(3);
-    const plants = await Plant.find();
-    res.json(plants);
+    //const crags = await Crag.find().limit(3);
+    const crags = await Crag.find();
+    res.json(crags);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -18,19 +16,20 @@ router.get("/", async (req, res) => {
 
 // POST ROUTE (protected - only logged in users)
 router.post("/", verifyToken, async (req, res) => {
-  const plant = new Plant({
-    commonName: req.body.commonName,
-    family: req.body.family,
-    category: req.body.category,
-    origin: req.body.origin,
-    climate: req.body.climate,
-    imgUrl: req.body.imgUrl,
+  const crag = new Crag({
+    route_name: req.body.route_name,
+    parent_sector: req.body.parent_sector,
+    type_string: req.body.type_string,
+    YDS: req.body.yds,
+    Vermin: req.body.vermin,
+    parent_loc: req.body.parent_loc,
+    description: req.body.description,
   });
 
   try {
-    const newPlant = await plant.save();
-    res.status(201).json(newPlant);
-    console.log(newPlant);
+    const newCrag = await crag.save();
+    res.status(201).json(newCrag);
+    console.log(newCrag);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
@@ -39,8 +38,8 @@ router.post("/", verifyToken, async (req, res) => {
 // DELETE ROUTE (protected - only logged in users)
 router.delete("/:id", verifyToken, async (req, res) => {
   try {
-    await Plant.findByIdAndDelete(req.params.id);
-    res.json({ message: "Plant deleted" });
+    await Crag.findByIdAndDelete(req.params.id);
+    res.json({ message: "Crag deleted" });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

@@ -24,7 +24,7 @@ const CragSchema = new mongoose.Schema({
   },
   parent_loc: {
     // [latitude, longitude]
-    type: [Float],
+    type: [Number],
   },
   description: {
     // e.g., "A classic sport route with a steep overhang and great holds."

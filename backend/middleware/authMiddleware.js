@@ -16,6 +16,7 @@ function verifyToken(req, res, next) {
     req.userId = decoded.id; // add user ID to request
     next();
   } catch (error) {
+    // if token is missing/invalid, return 401
     res.status(401).json({ error: "Invalid token" });
   }
 }
