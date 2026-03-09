@@ -18,7 +18,7 @@ function App() {
           <Route path="/register" element={<Register />} />{" "}
           {/* ADD ROUTE HERE */}
           {/* protected route: the Dashboard is nested inside ProtectedRoute.
-              It checks for a token before allowing the
+              It checks for a token before allowing the 
               Dashboard component to render
           */}
           <Route
