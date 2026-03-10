@@ -39,7 +39,7 @@ function Login() {
         login(data.token);
 
         // instantly redirect the user to the Dashboard page
-        navigate("");
+        navigate("/dashboard");
       } else {
         // the Error Path (e.g., wrong password, user not found)
         alert(data.message || "Login failed");
