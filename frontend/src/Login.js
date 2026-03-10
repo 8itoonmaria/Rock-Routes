@@ -114,7 +114,7 @@ function Login() {
         </button>
       </form>
 
-      {/* React Router Link: We use <Link> instead of a standard HTML <a> tag.
+      {/* React Router Link: We use <Link> instead of a standard HTML <a> tag. 
           An <a> tag forces the browser to download the whole app again. <Link> just swaps the components instantly. */}
       <p style={{ marginTop: "20px" }}>
         Don't have an account?{" "}
