@@ -17,7 +17,6 @@ export function AuthProvider({ children }) {
       try {
         // decode the JWT to get user details (like username or id)
         const decoded = jwtDecode(token);
-        console.log("Decoded JWT:", decoded);
         setUser(decoded);
       } catch (err) {
         console.error("Token is invalid or corrupted:", err);

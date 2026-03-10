@@ -57,7 +57,13 @@ function Dashboard() {
 
       // basic error handling if the token is invalid/missing or the server rejects
       if (!response.ok) {
-        throw new Error("Failed to add crag. Are you authorized?");
+        // console.log("TOKEN:", sessionStorage.getItem(token));
+        // throw new Error("Failed to add crag. Are you authorized?");
+        if (!response.ok) {
+          const errorData = await response.json();
+          console.log("Server error:", errorData);
+          throw new Error(errorData.message || "Failed to add crag");
+        }
       }
 
       // if successful, the server sends back the newly created crag (including its new MongoDB _id)
@@ -147,7 +153,7 @@ function Dashboard() {
         <div className="left-panel">
           <div className="card form-card">
             <h3>Add New Route</h3>
-            <form onSubmit={handleSubmit} className="plant-form">
+            <form onSubmit={handleSubmit} className="crag-form">
               <label>Route Name</label>
               {/* note: 'name' must match the keys in our formData state for handleChange to work */}
               <input
@@ -164,6 +170,7 @@ function Dashboard() {
                 value={formData.parent_sector}
                 onChange={handleChange}
                 placeholder="e.g. Smith Rock"
+                required
               />
 
               <label>Type of Route</label>
@@ -172,6 +179,7 @@ function Dashboard() {
                 value={formData.type_string}
                 onChange={handleChange}
                 placeholder="e.g. Sport, Trad, Bouldering"
+                required
               />
 
               <label>YDS</label>
@@ -180,6 +188,7 @@ function Dashboard() {
                 value={formData.YDS}
                 onChange={handleChange}
                 placeholder="e.g. 5.10a, Yosemite Decimal System grade"
+                required
               />
 
               <label>Vermin</label>
@@ -188,6 +197,7 @@ function Dashboard() {
                 value={formData.Vermin}
                 onChange={handleChange}
                 placeholder="e.g. V-scale grade (used for bouldering)"
+                required
               />
 
               <label>Parent Location</label>
@@ -196,6 +206,7 @@ function Dashboard() {
                 value={formData.parent_loc}
                 onChange={handleChange}
                 placeholder="e.g. [latitude, longitude]"
+                required
               />
               <label>Description</label>
               <input
@@ -203,6 +214,7 @@ function Dashboard() {
                 value={formData.description}
                 onChange={handleChange}
                 placeholder="e.g. A classic sport route with a steep overhang and great holds."
+                required
               />
 
               <button type="submit">Add Route</button>
@@ -210,10 +222,10 @@ function Dashboard() {
           </div>
         </div>
 
-        {/* right panel: the grid of plants */}
+        {/* right panel: the grid of crags */}
         <div className="right-panel">
           <div className="crag-grid">
-            {/* array map: loop over every plant in our state array and create a card for it */}
+            {/* array map: loop over every crag in our state array and create a card for it */}
             {crags.map((crag) => (
               // keys are required by React to keep track of list items efficiently
               <div key={crag._id} className="crag-card">

@@ -1,9 +1,4 @@
-import {
-  Route,
-  BrowserRouter as Router,
-  Routes,
-  Navigate,
-} from "react-router-dom";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext"; // global state provider
 import Dashboard from "./Dashboard";
 import Login from "./Login";
@@ -19,7 +14,6 @@ function App() {
       <Router>
         <Routes>
           {/* public routes: anyone can access these */}
-          <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />{" "}
           {/* ADD ROUTE HERE */}
@@ -28,7 +22,7 @@ function App() {
               Dashboard component to render
           */}
           <Route
-            path="/dashboard"
+            path="/"
             element={
               <ProtectedRoute>
                 <Dashboard />
