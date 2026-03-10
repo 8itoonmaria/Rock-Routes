@@ -36,3 +36,78 @@
     transform: rotate(360deg);
   }
 }
+
+/* Main App Container */
+.App {
+  padding: 40px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* Glass Card Style */
+.card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 25px;
+  margin-bottom: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Form Layout */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Dashboard Sections */
+.section {
+  margin-bottom: 30px;
+}
+
+/* Titles */
+.section-title {
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
+/* Tables inside glass cards */
+.card table {
+  margin-top: 10px;
+}
+
+/* Auth Pages (Login/Register) */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.auth-card {
+  width: 420px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Navbar (if you add one later) */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.crag-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}

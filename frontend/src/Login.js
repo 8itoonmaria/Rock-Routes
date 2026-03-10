@@ -39,7 +39,7 @@ function Login() {
         login(data.token);
 
         // instantly redirect the user to the Dashboard page
-        navigate("/");
+        navigate("/dashboard");
       } else {
         // the Error Path (e.g., wrong password, user not found)
         alert(data.message || "Login failed");
@@ -50,78 +50,89 @@ function Login() {
   }
 
   return (
-    <div
-      style={{
-        padding: "50px",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
-      <h2 style={{ color: "#1b5e20", marginBottom: "20px" }}>
-        Login to Plant Dashboard
-      </h2>
-
-      <form
-        onSubmit={handleLogin}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          width: "100%",
-          maxWidth: "320px",
-          gap: "15px",
-        }}
-      >
-        <input
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+    <div className="auth-container">
+      <div className="auth-card">
+        <div
           style={{
-            padding: "12px",
-            fontSize: "1.1rem",
-            borderRadius: "4px",
-            border: "1px solid #ccc",
-          }}
-        />
-
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          style={{
-            padding: "12px",
-            fontSize: "1.1rem",
-            borderRadius: "4px",
-            border: "1px solid #ccc",
-          }}
-        />
-
-        <button
-          type="submit"
-          style={{
-            padding: "12px",
-            fontSize: "1.1rem",
-            backgroundColor: "#2e7d32",
-            color: "white",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-            fontWeight: "bold",
+            padding: "50px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
-          Login
-        </button>
-      </form>
+          <h2
+            style={{
+              color: "#ffffff",
+              marginBottom: "30px",
+              fontSize: "1.3rem",
+            }}
+          >
+            Welcome Back to Rock Routes
+          </h2>
 
-      {/* React Router Link: We use <Link> instead of a standard HTML <a> tag. 
-          An <a> tag forces the browser to download the whole app again. <Link> just swaps the components instantly. */}
-      <p style={{ marginTop: "20px" }}>
-        Don't have an account?{" "}
-        <Link to="/register" style={{ color: "#2e7d32", fontWeight: "bold" }}>
-          Register here
-        </Link>
-      </p>
+          <form
+            onSubmit={handleLogin}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              width: "100%",
+              maxWidth: "320px",
+              gap: "15px",
+            }}
+          >
+            <input
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              style={{
+                padding: "12px",
+                fontSize: "1.1rem",
+                borderRadius: "4px",
+                border: "1px solid #ccc",
+              }}
+            />
+
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              style={{
+                padding: "12px",
+                fontSize: "1.1rem",
+                borderRadius: "4px",
+                border: "1px solid #ccc",
+              }}
+            />
+
+            <button
+              type="submit"
+              style={{
+                padding: "12px",
+                fontSize: "1.1rem",
+                backgroundColor: "#2e7d32",
+                color: "white",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+                fontWeight: "bold",
+              }}
+            >
+              Login
+            </button>
+          </form>
+
+          <p style={{ marginTop: "20px" }}>
+            Don't have an account?{" "}
+            <Link
+              to="/register"
+              style={{ color: "#2e7d32", fontWeight: "bold" }}
+            >
+              Register here
+            </Link>
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
