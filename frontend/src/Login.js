@@ -1,136 +1,170 @@
-// import necessary hooks
-// 'useState' handles what the user types, 'useContext' lets us talk to our global AuthContext
-import { useContext, useState } from "react";
-
-// import routing tools. 'Link' is for clickable text, 'useNavigate' allows us to force a redirect in code
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import "./App.css";
 import { AuthContext } from "./context/AuthContext";
 
 function Login() {
-  // local State: we need to keep track of exactly what the user is typing into the inputs
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({ username: "", password: "" });
+  const [allCrags, setAllCrags] = useState([]); // store everything for filtering
+  const [error, setError] = useState("");
 
-  // we grab the 'login' function from our AuthContext
-  // we will call this function ONLY IF the backend says the password is correct
+  const { token } = useContext(AuthContext);
+
+  // search state - the search term
+  const [searchTerm, setSearchTerm] = useState("");
+
   const { login } = useContext(AuthContext);
-
-  // initialize the navigator so we can send the user to the Dashboard after they log in
   const navigate = useNavigate();
 
-  // the Submit Handler: This runs when the user clicks the "Login" button.
-  async function handleLogin(e) {
-    e.preventDefault(); // prevents the browser from refreshing the page (the default HTML form behavior)
+  // data fetching - GET all crags (GET is the default method)
+  useEffect(() => {
+    fetch("http://localhost:5000/api/crags")
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setAllCrags(data);
+        }
+      })
+      .catch((err) => console.error("Error fetching public crags!:", err));
+  }, []);
+
+  useEffect(() => {
+    if (token) {
+      navigate("/dashboard"); // redirect to dashboard if already logged in
+    }
+  }, [token, navigate]);
+
+  function handleChange(e) {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  }
+
+  // authentication logic
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setError("");
 
     try {
-      // send the username and password to our secure Express backend
-      const res = await fetch("http://localhost:5000/api/auth/login", {
+      const response = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify(formData),
       });
 
-      const data = await res.json();
+      const data = await response.json();
 
-      // the Success path
-      if (res.ok) {
-        // we pass the new token to our Context. The Context saves it to localStorage
-        // and updates the whole app so Navbar/Dashboard knows user is logged in
+      if (response.ok) {
         login(data.token);
-
-        // instantly redirect the user to the Dashboard page
         navigate("/dashboard");
       } else {
-        // the Error Path (e.g., wrong password, user not found)
-        alert(data.message || "Login failed");
+        setError(data.message || "Invalid credentials");
       }
     } catch (err) {
-      console.error(err);
+      setError("Server error. Please try again later.");
     }
   }
 
-  return (
-    <div className="auth-container">
-      <div className="auth-card">
-        <div
-          style={{
-            padding: "50px",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <h2
-            style={{
-              color: "#ffffff",
-              marginBottom: "30px",
-              fontSize: "1.3rem",
-            }}
-          >
-            Welcome Back to Rock Routes
-          </h2>
+  // search logic
+  const filteredCrags = allCrags
+    .filter((crag) => {
+      return (crag.route_name || "")
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
+    })
+    .slice(0, 10); // Show only top 10 (5 per row)
 
-          <form
-            onSubmit={handleLogin}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              width: "100%",
-              maxWidth: "320px",
-              gap: "15px",
-            }}
-          >
+  // helper function to clean image URLs from Google Search redirects
+  function getCleanImageUrl(url) {
+    if (!url) return null;
+    if (url.includes("search?q=")) {
+      try {
+        const directUrl = url.split("search?q=")[1];
+        return decodeURIComponent(directUrl);
+      } catch (e) {
+        return url;
+      }
+    }
+    return url;
+  }
+
+  return (
+    <div className="App">
+      {/* LOGIN */}
+      <div className="auth-container">
+        <div className="auth-card card">
+          <h2>Welcome Back to Rock Routes</h2>
+
+          <form onSubmit={handleSubmit}>
             <input
+              name="username"
+              type="text"
               placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              style={{
-                padding: "12px",
-                fontSize: "1.1rem",
-                borderRadius: "4px",
-                border: "1px solid #ccc",
-              }}
+              onChange={handleChange}
+              required
             />
 
             <input
+              name="password"
               type="password"
               placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              style={{
-                padding: "12px",
-                fontSize: "1.1rem",
-                borderRadius: "4px",
-                border: "1px solid #ccc",
-              }}
+              onChange={handleChange}
+              required
             />
 
-            <button
-              type="submit"
-              style={{
-                padding: "12px",
-                fontSize: "1.1rem",
-                backgroundColor: "#2e7d32",
-                color: "white",
-                border: "none",
-                borderRadius: "4px",
-                cursor: "pointer",
-                fontWeight: "bold",
-              }}
-            >
-              Login
-            </button>
+            <button type="submit">Login</button>
           </form>
 
-          <p style={{ marginTop: "20px" }}>
-            Don't have an account?{" "}
-            <Link
-              to="/register"
-              style={{ color: "#2e7d32", fontWeight: "bold" }}
-            >
-              Register here
-            </Link>
+          <p>
+            Don't have an account? <Link to="/register">Register here</Link>
           </p>
+        </div>
+      </div>
+
+      {/* SEARCH */}
+      <div className="card">
+        <h3 className="section-title">Search Routes</h3>
+
+        <div className="search-row">
+          <input
+            type="text"
+            placeholder="Search by route name..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+
+          <button onClick={() => setSearchTerm("")}>Clear</button>
+        </div>
+      </div>
+
+      {/* PREVIEW GRID */}
+      <div className="card">
+        <h3 className="section-title">Route Collection Preview</h3>
+
+        <div className="crag-grid">
+          {filteredCrags.length > 0 ? (
+            filteredCrags.map((crag) => (
+              <div key={crag._id} className="crag-card">
+                <div className="image-container">
+                  {crag.img_url ? (
+                    <img
+                      src={getCleanImageUrl(crag.img_url)}
+                      alt={crag.route_name}
+                    />
+                  ) : (
+                    <div className="placeholder">No Image</div>
+                  )}
+                </div>
+
+                <div className="card-details">
+                  <h4>{crag.route_name}</h4>
+                  <p>
+                    <strong>{crag.parent_sector}</strong>
+                  </p>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p>No routes match your search.</p>
+          )}
         </div>
       </div>
     </div>

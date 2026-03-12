@@ -24,35 +24,35 @@ const RouteSchema = new mongoose.Schema({
     unique: true,
   },
 
-  sector_ID: Number,
+  sector_ID: { type: Number },
 
-  type_string: String,
+  type_string: { type: String },
 
-  fa: String,
+  fa: { type: String },
 
-  YDS: String,
+  YDS: { type: String },
 
-  Vermin: String,
+  Vermin: { type: String },
 
-  nopm_YDS: String,
+  nopm_YDS: { type: String },
 
-  nopm_Vermin: String,
+  nopm_Vermin: { type: String },
 
-  YDS_rank: Number,
+  YDS_rank: { type: Number },
 
-  Vermin_rank: Number,
+  Vermin_rank: { type: Number },
 
-  safety: String,
+  safety: { type: String },
 
   parent_loc: {
     type: [Number], // [longitude, latitude]
   },
 
-  description: [String],
+  description: { type: [String] },
 
-  location: String,
+  location: { type: String },
 
-  protection: [String],
+  protection: { type: [String] },
 
   corrected_users_ratings: [RatingSchema],
 });

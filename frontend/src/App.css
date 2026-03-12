@@ -141,3 +141,39 @@ form {
   border-radius: 6px;
   margin-bottom: 10px;
 }
+
+.search-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.search-row input {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 300px;
+}
+
+.crag-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+.image-container {
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-container img {
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.placeholder {
+  font-size: 0.8rem;
+  opacity: 0.6;
+}

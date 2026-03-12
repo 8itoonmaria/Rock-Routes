@@ -4,7 +4,7 @@ function AllCrags() {
   const [crags, setCrags] = useState([]);
 
   useEffect(() => {
-    fetch("/crags.json")
+    fetch("http://localhost:5000/api/crags")
       .then((res) => res.json())
       .then((data) => setCrags(data));
   }, []);
