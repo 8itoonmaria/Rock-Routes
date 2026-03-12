@@ -15,7 +15,7 @@ function AllCrags() {
 
       {crags.map((crag, index) => (
         <div key={index}>
-          <h3>{crag.Common_Name}</h3>
+          <h3>{crag.route_name}</h3>
         </div>
       ))}
     </div>
